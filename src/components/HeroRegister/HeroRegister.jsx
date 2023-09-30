@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendEmailVerification,  } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile,  } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -17,8 +17,9 @@ const HeroRegister = () => {
 
     const email = e.target.email.value;
     const accepted = e.target.terms.checked
+    const name = e.target.name.value;
     const password = e.target.password.value;
-    console.log(email, password, accepted);
+    console.log(name, email, password, accepted);
     if(password.length < 6){
         setRegisterError('Password should be at least 6 characters or longer')
         return;
@@ -33,6 +34,18 @@ const HeroRegister = () => {
     .then(result => {
         console.log(result.user);
         setSuccess("User created successfully")
+        // update profile 
+        updateProfile(result.user, {
+          displayName: name,
+          photoURL: "https://example.com/jane-q-user/profile.jpg"
+        })
+        .then(()=> {
+          alert('profile updated')
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        // send verification email 
         sendEmailVerification(result.user)
         .then(()=> {
           alert('please check your email and verify your account')
@@ -57,6 +70,18 @@ const HeroRegister = () => {
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <div className="card-body">
               <form onSubmit={handleRegister}>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Name</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Write you name"
+                    name="name"
+                    className="input input-bordered"
+                    required
+                  />
+                </div>
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Email</span>
