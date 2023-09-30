@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Register = () => {
     const handleRegister = e => {
         e.preventDefault();
@@ -17,6 +19,7 @@ const Register = () => {
                     <input className="mb-4 py-2 border w-3/4" type="password" name="password" placeholder="Password"/>
                     <br />
                     <input  className="btn btn-primary py-2 mb-4 border w-3/4" type="submit" value="Register" />
+                    <p>Already have an account? <Link to="/login">Login</Link></p>
                 </form>
             </div>
         </div>
